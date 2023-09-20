@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }} 
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   build_and_push:
@@ -25,13 +25,10 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build Docker image
-      run: |
-        docker buildx create --use
-        docker buildx build --platform linux/${{ matrix.arch }} -t $DOCKER_USERNAME/xmake:${{ matrix.arch }} .
-
     - name: Login to Docker Hub
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-    - name: Push Docker image to Docker Hub
-      run: docker push $DOCKER_USERNAME/xmake:${{ matrix.arch }}
+    - name: Build and Push Docker image
+      run: |
+        docker buildx create --use
+        docker buildx build --platform linux/${{ matrix.arch }} -t $DOCKER_USERNAME/xmake:${{ matrix.arch }} --push .
