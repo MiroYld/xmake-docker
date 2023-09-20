@@ -28,10 +28,10 @@ jobs:
     - name: Build Docker image
       run: |
         docker buildx create --use
-        docker buildx build --platform linux/${{ matrix.arch }} -t $DOCKER_USERNAME/your-image-name:${{ matrix.arch }} .
+        docker buildx build --platform linux/${{ matrix.arch }} -t $DOCKER_USERNAME/xmake:${{ matrix.arch }} .
 
     - name: Login to Docker Hub
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
     - name: Push Docker image to Docker Hub
-      run: docker push $DOCKER_USERNAME/your-image-name:${{ matrix.arch }}
+      run: docker push $DOCKER_USERNAME/xmake:${{ matrix.arch }}
